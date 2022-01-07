@@ -31,7 +31,7 @@ header h1{
     align-self: center;
     justify-self: flex-start;
     font-size: 0;
-    background-image: url('../../assets/logo.png');
+    background-image: url('../../assets/images/logo.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;

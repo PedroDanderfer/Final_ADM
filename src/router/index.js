@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Tables from '../views/Tables.vue'
+import Tables from '../views/tables/Tables.vue'
 import Menu from '../views/menu/Menu.vue'
 import Categories from '../views/categories/Categories.vue'
 import CreateProducts from '../views/products/Create.vue'
-import Orders from '../views/Orders.vue'
+import Orders from '../views/orders/Orders.vue'
 
 Vue.use(VueRouter)
 

@@ -2,7 +2,7 @@
     <li id="componentCategoriesItem">
         <div v-if="editDisplay" id="categoriesItemEdit">
             <form v-on:submit.prevent>
-                    <Input type="text" :ref="category" :othersErrors="this.inputs.category.errors" :placeValue="category" label="Nombre de la categoría" name="category" v-on:updateInput="this.updateInput" :validationRules="this.getValidationRules('category')"/>
+                    <TextInput ref="categoryInput" :othersErrors="this.inputs.category.errors" :placeValue="category" label="Nombre de la categoría" name="category" v-on:updateInput="this.updateInput" :validationRules="this.getValidationRules('category')"/>
                     <input type="submit" @click="editCategory" value="Guardar">
             </form>
             <button v-on:click="editCategoryDisplay">Cerrar</button>
@@ -126,12 +126,15 @@
     }
 </style>
 <script>
-import Input from '@/components/inputs/Input.vue'
+import TextInput from '@/components/inputs/Text.vue'
+
+import validationServices from '@/services/validation.js'
+import categoriesServices from '@/services/categories.js'
 
 export default {
     name: 'CategoriesItem',
     components:{
-        Input
+        TextInput
     },
     props:{
         category:{
@@ -152,66 +155,38 @@ export default {
     },
     methods:{
         updateInput: function(data){
-            this.inputs[data.type].value = data.value;
-            this.inputs[data.type].validated = data.validated;
-            this.inputs[data.type].errors = data.errors;
+            this.inputs[data.name].value = data.value;
+            this.inputs[data.name].validated = data.validated;
+            this.inputs[data.name].errors = data.errors;
         },
-        getValidationRules: function(name){
-            let rules = {
-                category: ['required', 'max:20', 'min:2']
-            };
-
-            return rules[name];
+        getValidationRules: function(value){
+            return validationServices.getValidationRules(value);
         },
         editCategoryDisplay:function(){
             this.editDisplay = !this.editDisplay;
         },
         deleteCategory: function(category){
-            this.$emit('deleteCategory', category);
+            categoriesServices.delete(category).then((res) => {
+                this.$emit('editCategories', res.categories);
+                return this.$store.commit('addNotification', { type: 'success', message: 'La categoría se eliminó con éxito.' });
+            }).catch((error) => {
+                return this.$store.commit('addNotification', { type: 'errors', message: error.errors });
+            });
         },
         editCategory: function(){
-            this.inputs.category.errors = [];
-            let categories = JSON.parse(localStorage.categories), editSuccess = false;
-            this.$refs[this.category].validate();
+            this.$refs.categoryInput.validate();
 
             if(!this.inputs.category.validated){
-                return this.$refs[this.category].validate();
-            } 
-
-            if(this.category == this.inputs.category.value){
-                let errorExist = false;
-                for (let i = 0; i < this.inputs.category.errors.length; i++) {
-                    if(this.inputs.category.errors[i] == 'La categoría ya existe.'){
-                        errorExist = true;
-                        break;
-                    }else{
-                        continue;
-                    }           
-                }
-                if(!errorExist){
-                    return this.inputs.category.errors.push('La categoría ya existe.');
-                }else{
-                    return false;
-                }
+                return false;
             }
 
-            for (let i = 0; i < categories.length; i++) {
-                if(categories[i] == this.category){
-                    categories.splice(i, 1, this.inputs.category.value);    
-                    editSuccess = true;
-                    break;
-                }else{
-                    continue;
-                }
-            }
-
-            if(editSuccess){
-                localStorage.categories = JSON.stringify(categories);
-                this.$emit('editCategory', this.category, this.inputs.category.value);
+            categoriesServices.edit(this.inputs.category.value, this.category).then((res) => {
+                this.$emit('editCategory', res.newCategory, res.oldCategory);
                 return this.$store.commit('addNotification', { type: 'success', message: 'La categoría se editó con éxito.' });
-            }else{
-                return this.$store.commit('addNotification', { type: 'error', message: 'La categoría no se pudo editar.' });
-            }
+            }).catch((error) => {
+                console.log(error);
+                return this.$store.commit('addNotification', { type: 'errors', message: error.errors });
+            });
         }
     },
     beforeMount: function(){

@@ -6,7 +6,7 @@
           <p>Algunos ejemplos pueden ser: pastas, postres, bebidas.</p>
       </div>
       <form v-on:submit.prevent>
-          <Input ref="categoryInput" type="text" label="Nombre de la categoría" name="category" v-on:updateInput="this.updateInput" :validationRules="this.getValidationRules('category')"/>
+          <TextInput ref="categoryInput" label="Nombre de la categoría" name="category" v-on:updateInput="this.updateInput" :validationRules="this.getValidationRules('category')"/>
           <input type="submit" @click="createCategory()" value="Crear categoría">
       </form>
     </div>
@@ -15,7 +15,7 @@
         <p>Todavía no creaste categorías.</p>
       </div>
       <ul v-else>
-        <CategoriesItem v-for="category in this.categories" :ref="category" :key="category" :category="category" v-on:deleteCategory="deleteCategory(category)" v-on:editCategory="editCategory"/>
+        <CategoriesItem v-for="category in this.categories" :ref="category" :key="category" :category="category" v-on:editCategories="editCategories" v-on:deleteCategory="deleteCategory(category)" v-on:editCategory="editCategory"/>
       </ul>
     </div>
   </section>
@@ -74,28 +74,18 @@
     grid-template-columns: 1fr;
     grid-gap: 10px;
   }
-
-  @media(min-width:900px){
-    #sectionCategories{
-      grid-template-columns: auto auto;
-      grid-template-rows: 1fr;
-      max-width: none;
-      padding: 30px;
-    }
-
-    #sectionCategories >div:last-of-type{
-      min-width: 400px;
-    }
-  }
 </style>
 <script>
-import Input from '@/components/inputs/Input.vue'
-import CategoriesItem from '../../components/listItems/CategoriesItem.vue';
+import TextInput from '@/components/inputs/Text.vue'
+import CategoriesItem from '@/components/listItems/CategoriesItem.vue';
+
+import categoriesServices from '@/services/categories.js'
+import validationServices from '@/services/validation.js'
 
 export default {
   name: 'Categories',
   components: {
-    Input,
+    TextInput,
     CategoriesItem
   },
   data:function(){
@@ -112,82 +102,36 @@ export default {
   },
   methods:{
     updateInput: function(data){
-        this.inputs[data.type].value = data.value;
-        this.inputs[data.type].validated = data.validated;
-        this.inputs[data.type].errors = data.errors;
+        this.inputs[data.name].value = data.value;
+        this.inputs[data.name].validated = data.validated;
+        this.inputs[data.name].errors = data.errors;
     },
-    getValidationRules: function(name){
-        let rules = {
-            category: ['required', 'max:20', 'min:2']
-        };
-
-        return rules[name];
+    getValidationRules: function(value){
+      return validationServices.getValidationRules(value);
     },
     createCategory: function(){
-      let categories, categoryExist = false;
       this.$refs.categoryInput.validate();
 
       if(!this.inputs.category.validated){
-        return false;
+          return false;
       }
-      
-      if(localStorage.categories == undefined || localStorage.categories == null || localStorage.categories.length == 0){
-        categories = [this.inputs.category.value];
-        this.categories.push(this.inputs.category.value);
-        localStorage.categories = JSON.stringify(categories);
-      }else{
-        categories = JSON.parse(localStorage.categories);
-        for (let i = 0; i < categories.length; i++) {
-          if(categories[i] == this.inputs.category.value){
-            categoryExist = true;
-            break;
-          }else{
-            continue;
-          }          
-        }
 
-        if(categoryExist){
-          this.inputs.category.validated = false;
-          return this.inputs.category.errors.push('El nombre ya se encuentra en uso.');
-        }else{
-          categories.push(this.inputs.category.value);
-          this.categories.push(this.inputs.category.value);
-          localStorage.categories = JSON.stringify(categories);
+      categoriesServices.create(this.inputs.category.value).then((res) => {
+          this.categories.push(res.categories);
+          this.inputs.category.value = null;
+          this.$refs.categoryInput.value = null;
           return this.$store.commit('addNotification', { type: 'success', message: 'La categoría se añadio con éxito.' });
-        }
-      }
+      }).catch((error) => {
+          return this.$store.commit('addNotification', { type: 'errors', message: error.errors });
+      });
     },
-    deleteCategory: function(category){
-      let categoriesLocal = JSON.parse(localStorage.categories), deleted = false;
-      for (let i = 0; i < this.categories.length; i++) {
-        if(this.categories[i] == category){
-          this.categories.splice(i, 1);
-          break;
-        }else{
-          continue;
-        } 
-      }
-      for (let i = 0; i < categoriesLocal.length; i++) {
-        if(categoriesLocal[i] == category){
-          deleted = true;
-          categoriesLocal.splice(i, 1);
-          break;
-        }else{
-          continue;
-        }        
-      }
-
-      if(deleted){
-        localStorage.categories = JSON.stringify(categoriesLocal);
-        return this.$store.commit('addNotification', { type: 'success', message: 'La categoría se eliminó con éxito.' });
-      }else{
-        return this.$store.commit('addNotification', { type: 'error', message: 'Hubo un problema al eliminar la categoría.' });
-      }
+    editCategories: function(categories){
+      return this.categories = categories;
     },
-    editCategory: function(old, latest){
+    editCategory: function(newCategory, oldCategory){
       for (let i = 0; i < this.categories.length; i++) {
-        if(this.categories[i] == old){
-          this.$set(this.categories, i, latest);
+        if(this.categories[i] == oldCategory){
+          this.$set(this.categories, i, newCategory);
           break;
         } else{
           continue;

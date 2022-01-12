@@ -5,7 +5,7 @@
       <Notification v-for="success in this.$store.state.success" :key="success" type="success" :notification="success"/>
     </ul>
     <ul v-if="this.$store.state.errors.length != 0" class="notificationList notificationError">
-      <Notification v-for="error in this.$store.state.errors" :key="error" type="error" :notification="error"/>
+      <Notification v-for="error in this.$store.state.errors" :key="error" type="errors" :notification="error"/>
     </ul>
     <router-view/>
   </div>

@@ -175,6 +175,19 @@ export default {
             }
         }
     },
+
+    bool(value){
+        if(typeof value == "boolean"){
+            return{
+                status: true
+            }
+        }else{
+            return{
+                status:false,
+                error: 'Debe ser verdadero o falso.'
+            }
+        }
+    },
     
     getValidationRules(name) {
         let rules = {
@@ -183,6 +196,7 @@ export default {
             title: ['required', 'unique:products-title', 'min:2', 'max:30'],
             description: ['min:10', 'max:100'],
             price: ['numeric'],
+            stock: ['bool'],
             discount:['numeric', 'min:1', 'max:100'],
         };
 

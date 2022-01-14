@@ -11,8 +11,11 @@
       </form>
     </div>
     <div>
-      <div v-if="this.categories.length == 0">
-        <p>Todavía no creaste categorías.</p>
+      <div v-if="this.categories.length == 0" class="categoryNotFound">
+        <div>
+          <span></span>
+          <p>Todavía no se crearon categorías.</p>
+        </div>
       </div>
       <ul v-else>
         <CategoriesItem v-for="category in this.categories" :ref="category" :key="category" :category="category" v-on:editCategories="editCategories" v-on:deleteCategory="deleteCategory(category)" v-on:editCategory="editCategory"/>
@@ -52,13 +55,14 @@
    background-color: #f59f2a;
    border: 1px solid #f59f2a;
    border-radius: 5px;
+   font-weight: 500;
   }
 
   #sectionCategories >div:last-of-type{
     background-color: white;
     border: 1px solid white;
     border-radius: 10px;
-    padding: 10px;
+    padding: 10px 10px 0 10px;
     -webkit-box-shadow: -2px 2px 7px 0px rgba(0,0,0,0.43); 
     box-shadow: -2px 2px 7px 0px rgba(0,0,0,0.43);
     display: grid;
@@ -74,6 +78,44 @@
     grid-template-columns: 1fr;
     grid-gap: 10px;
   }
+
+  #sectionCategories >div:last-of-type >ul >div:last-of-type >div{
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 15px;
+  }
+
+  .categoryNotFound{
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+  }
+
+  .categoryNotFound >div{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    padding: 20px;
+    grid-gap: 20px;
+  }
+
+  .categoryNotFound >div >span{
+    display: block;
+    width: 100%;
+    height:300px;
+    background-image: url('../../assets/images/notFound.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .categoryNotFound >div >p{
+    font-weight: 500;
+    font-size: 18px;
+  }
 </style>
 <script>
 import TextInput from '@/components/inputs/Text.vue'
@@ -83,7 +125,7 @@ import categoriesServices from '@/services/categories.js'
 import validationServices from '@/services/validation.js'
 
 export default {
-  name: 'Categories',
+  name: 'categoriesSection',
   components: {
     TextInput,
     CategoriesItem
@@ -136,6 +178,16 @@ export default {
         } else{
           continue;
         }       
+      }
+    },
+    deleteCategory: function(category){
+      for (let i = 0; i < this.categories.length; i++) {
+        if(this.categories[i] == category){
+          this.categories.splice(i, 1);
+          break;
+        }else{
+          continue;
+        } 
       }
     }
   },

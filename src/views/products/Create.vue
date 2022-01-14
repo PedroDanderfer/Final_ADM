@@ -17,9 +17,9 @@
               <TextInput ref="discountInput" minInput="0" maxInput="100" label="Descuento (porcentaje)" name="discount" v-on:updateInput="this.updateInput" :validationRules="this.getValidationRules('discount')"/>
             </div>
           </div>
-          <div v-if="this.categories.length == 0">
+          <div v-if="this.categories.length == 0" class="emptyCategories">
             <p>Todavia no creaste ninguna categoría</p>
-            <p><router-link to="/categories">Ir a categories</router-link></p>
+            <p><router-link to="/categories">Crear nueva categoria</router-link></p>
           </div>
           <div v-else>
                <Select ref="categoriesInput" name="categories" :options="this.categories" v-on:updateInput="this.updateInput" :validationRules="this.getValidationRules('categories')"/>
@@ -86,6 +86,10 @@
    border: 1px solid #f59f2a;
    border-radius: 5px;
   }
+
+  .emptyCategories{
+    margin-bottom: 10px;
+  }
 </style>
 <script>
 import Select from '@/components/inputs/Select.vue'
@@ -96,7 +100,7 @@ import validationServices from '@/services/validation.js'
 import productsServices from '@/services/products.js'
 
 export default {
-  name: 'createProduct',
+  name: 'createProductSection',
   data: function(){
     return{
       display:{
@@ -156,10 +160,11 @@ export default {
       if(this.$refs.discountInput != undefined){
         this.$refs.discountInput.validate();
       }
-      this.$refs.categoriesInput.validate();
+      if(this.$refs.categoriesInput != undefined){
+        this.$refs.categoriesInput.validate();
+      }
 
       if(!this.inputs.title.validated || this.inputs.description.validated == false || this.inputs.price.validated == false || this.inputs.discount.validated == false || this.inputs.categories.validated == false){
-          console.log('false');
           return false;
       }
 

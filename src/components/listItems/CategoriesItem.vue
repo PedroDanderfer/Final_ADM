@@ -167,7 +167,7 @@ export default {
         },
         deleteCategory: function(category){
             categoriesServices.delete(category).then((res) => {
-                this.$emit('editCategories', res.categories);
+                this.$emit('deleteCategory', res.category);
                 return this.$store.commit('addNotification', { type: 'success', message: 'La categoría se eliminó con éxito.' });
             }).catch((error) => {
                 return this.$store.commit('addNotification', { type: 'errors', message: error.errors });

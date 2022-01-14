@@ -40,6 +40,10 @@ export default {
   margin-right: auto;
 }
 
+#app >section{
+  margin-top: 20px;
+}
+
 .notificationList{
   width: calc(100% - 20px);
   padding: 10px;
@@ -61,5 +65,11 @@ export default {
 .notificationError{
   background-color: rgba(255, 0, 0, 0.3);
   border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+@media (min-width:350px){
+  #app{
+  padding: 0 10px 20px 10px;
+}
 }
 </style>

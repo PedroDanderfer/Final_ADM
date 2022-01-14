@@ -1,6 +1,7 @@
 <template>
     <div class="selectInputComponent">
         <div>
+            <label :for="name+'Input'">{{ label }}</label>
             <select ref="selectInput" v-model="value" v-on:input="this.validate" :name="name" :id="name+'Input'" multiple>
                 <option v-for="option in this.options" :key="option" :value="option">{{ option }}</option>
             </select>
@@ -60,8 +61,14 @@ export default {
         options:{
             type: Array
         },
+        label:{
+            type:String,
+        },
         validationRules:{
             type: Array
+        },
+        placeValue:{
+            type:Array
         }
     },
     data: function(){
@@ -69,6 +76,11 @@ export default {
             value: [],
             validated: null,
             errors: [],
+        }
+    },
+    beforeMount: function(){
+        if(this.placeValue !== null && this.placeValue !== undefined){
+            this.value = this.placeValue;
         }
     },
     methods:{

@@ -4,7 +4,9 @@ import Tables from '../views/tables/Tables.vue'
 import Menu from '../views/menu/Menu.vue'
 import Categories from '../views/categories/Categories.vue'
 import CreateProducts from '../views/products/Create.vue'
+import EditProducts from '../views/products/Edit.vue'
 import Orders from '../views/orders/Orders.vue'
+import NotFound from '../views/etc/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -34,9 +36,19 @@ const routes = [
     component: CreateProducts
   },
   {
+    path: '/product/edit/:product',
+    name: 'EditProducts',
+    component: EditProducts
+  },
+  {
     path: '/orders',
     name: 'Orders',
     component: Orders
+  },
+  {
+    path:'*',
+    name:'NotFound',
+    component:NotFound
   }
 ]
 

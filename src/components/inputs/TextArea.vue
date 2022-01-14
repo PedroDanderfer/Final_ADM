@@ -62,6 +62,9 @@ export default {
         },
         validationRules:{
             type: Array
+        },
+        placeValue:{
+            type:String
         }
     },
     data: function(){
@@ -72,8 +75,8 @@ export default {
         }
     },
     beforeMount: function(){
-        if(this.options !== undefined){
-            this.value = this.options;
+        if(this.placeValue !== undefined){
+            this.value = this.placeValue;
         }
     },
     methods:{

@@ -67,7 +67,28 @@ export default {
                     errors: 'No se pudo eliminar la categoría.'
                 });
             }else{
+                let products = JSON.parse(localStorage.products);
+
+                for (let i = 0; i < products.length; i++) {
+                    if(products[i].categories == null){
+                        continue;
+                    }else{
+                        for (let j = 0; j < products[i].categories.length; j++) {
+                            if(category == products[i].categories[j]){
+                                products[i].categories.splice(j, 1);
+                                break;
+                            }else{
+                                continue;
+                            }              
+                        } 
+                    }            
+                }
+        
+                localStorage.products = JSON.stringify(products);
                 localStorage.categories = JSON.stringify(categories);
+
+                console.log(JSON.parse(localStorage.products));
+                
                 resolver({
                     status: true,
                     categories: categories
@@ -102,6 +123,24 @@ export default {
                     errors: 'No se pudo editar la categoría.'
                 });
             }else{
+                let products = JSON.parse(localStorage.products);
+
+                for (let i = 0; i < products.length; i++) {
+                    if(products[i].categories == null){
+                        continue;
+                    }else{
+                        for (let j = 0; j < products[i].categories.length; j++) {
+                            if(oldCategory == products[i].categories[j]){
+                                products[i].categories.splice(j, 1, newCategory);
+                                break;
+                            }else{
+                                continue;
+                            }              
+                        } 
+                    }            
+                }
+        
+                localStorage.products = JSON.stringify(products);
                 localStorage.categories = JSON.stringify(categories);
                 resolver({
                     status: true,

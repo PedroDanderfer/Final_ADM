@@ -221,10 +221,12 @@ export default {
                 }
             }
 
-            if(this.product.stock != this.inputs.price.stock){
+            if(this.inputs.stock.value !== null && this.product.stock == this.inputs.stock.value){
                 inputsHasChanged.status = true;
                 inputsHasChanged.inputs.push('stock');
             }
+
+            console.log(this.product.stock+' '+this.inputs.stock.value);
 
             if(this.product.categories != this.inputs.categories.value){
                 inputsHasChanged.status = true;
@@ -257,8 +259,11 @@ export default {
                         return false;
                     }
                 }
+
+                console.log(inputsHasChanged.status+' '+inputsHasChanged.inputs);
                 
                 productsServices.edit(product, this.product).then(() => {
+                    this.$router.push({ path: '/menu' })
                     return this.$store.commit('addNotification', { type: 'success', message: 'El producto se editó con éxito.' });
                 }).catch((error) => {
                     return this.$store.commit('addNotification', { type: 'errors', message: error.errors });

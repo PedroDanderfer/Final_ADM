@@ -2,7 +2,11 @@ export default {
 
     getMenu(){
         return new Promise((resolver) => {
-            let products = JSON.parse(localStorage.products), categories = JSON.parse(localStorage.categories), menu = [];
+            if(localStorage.categories == undefined || localStorage.categories == null){
+                resolver([]);
+            }
+
+            let categories = JSON.parse(localStorage.categories), menu = [];
 
             for (let i = 0; i < categories.length; i++) {
                 menu.push({
@@ -11,13 +15,21 @@ export default {
                 });      
             }
 
-            menu.push({
-                category: 'Otros',
-                products: []
-            });
+            if(localStorage.products == undefined || localStorage.products == null){
+                resolver(menu);
+            }
+
+            let products = JSON.parse(localStorage.products);
 
             for (let i = 0; i < products.length; i++) {
                 if(products[i].categories === null || products[i].categories.length == 0){
+
+                    if (menu.indexOf('Otros') === -1) {
+                        menu.push({
+                            category: 'Otros',
+                            products: []
+                        });
+                    }
                     for (let l = 0; l < menu.length; l++) {
                         if(menu[l].category == 'Otros'){
                             menu[l].products.push(products[i]);

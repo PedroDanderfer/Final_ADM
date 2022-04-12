@@ -10,17 +10,10 @@
           <input type="submit" @click="createCategory()" value="Crear categoría">
       </form>
     </div>
-    <div>
-      <div v-if="this.categories.length == 0" class="categoryNotFound">
-        <div>
-          <span></span>
-          <p>Todavía no se crearon categorías.</p>
-        </div>
-      </div>
-      <ul v-else>
-        <CategoriesItem v-for="category in this.categories" :ref="category" :key="category" :category="category" v-on:editCategories="editCategories" v-on:deleteCategory="deleteCategory(category)" v-on:editCategory="editCategory"/>
-      </ul>
-    </div>
+    <ul v-if="this.categories.length != 0">
+      <CategoriesItem v-for="category in this.categories" :ref="category" :key="category" :category="category" v-on:editCategories="editCategories" v-on:deleteCategory="deleteCategory(category)" v-on:editCategory="editCategory"/>
+    </ul>
+    <NotFound v-else message="No se crearon categorias"/>
   </section>
 </template>
 <style>
@@ -58,28 +51,22 @@
    font-weight: 500;
   }
 
-  #sectionCategories >div:last-of-type{
+  #sectionCategories >ul{
+    list-style: none;
+    widows: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-gap: 10px;
     background-color: white;
     border: 1px solid white;
     border-radius: 10px;
     padding: 10px 10px 0 10px;
     -webkit-box-shadow: -2px 2px 7px 0px rgba(0,0,0,0.43); 
     box-shadow: -2px 2px 7px 0px rgba(0,0,0,0.43);
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    grid-gap: 10px;
   }
 
-  #sectionCategories >div:last-of-type >ul{
-    list-style: none;
-    widows: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-  }
-
-  #sectionCategories >div:last-of-type >ul >div:last-of-type >div{
+  #sectionCategories >ul >div:last-of-type >div{
     margin-top: 15px;
     display: grid;
     grid-template-columns: 1fr;
@@ -120,6 +107,7 @@
 <script>
 import TextInput from '@/components/inputs/Text.vue'
 import CategoriesItem from '@/components/listItems/CategoriesItem.vue';
+import NotFound from '@/components/NotFound.vue';
 
 import categoriesServices from '@/services/categories.js'
 import validationServices from '@/services/validation.js'
@@ -128,7 +116,8 @@ export default {
   name: 'categoriesSection',
   components: {
     TextInput,
-    CategoriesItem
+    CategoriesItem,
+    NotFound
   },
   data:function(){
     return{

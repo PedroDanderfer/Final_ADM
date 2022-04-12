@@ -14,7 +14,7 @@
             <div>
                 <router-link :to="'/product/edit/'+product.title">Editar producto</router-link>
                 <form v-on:submit.prevent>
-                    <input type="submit" @click="deleteProduct(product)" value="Borrar categoría">
+                    <input type="submit" @click="deleteProduct(product)" value="Borrar producto">
                 </form>
             </div>
         </div>
@@ -127,7 +127,7 @@ export default {
         deleteProduct: function(product){
             productsServices.delete(product).then((res) => {
                 this.$emit('deleteProduct', res.product);
-                return this.$store.commit('addNotification', { type: 'success', message: 'El producto se creo con éxito.' });
+                return this.$store.commit('addNotification', { type: 'success', message: 'El producto se eliminó con éxito.' });
             }).catch((error) => {
                 return this.$store.commit('addNotification', { type: 'errors', message: error.errors });
             });

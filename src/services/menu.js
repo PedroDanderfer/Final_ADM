@@ -1,5 +1,10 @@
 export default {
 
+    /**
+     * Obtiene el menú completo del local storage
+     * 
+     * @returns {Promise<Menu.MenuResponse>}
+     */
     getMenu(){
         return new Promise((resolver) => {
             if(localStorage.categories == undefined || localStorage.categories == null){

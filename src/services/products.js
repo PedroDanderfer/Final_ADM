@@ -1,5 +1,11 @@
 export default {
 
+    /**
+     * Crea un nuevo producto en el local storage
+     * 
+     * @param {product} newProduct 
+     * @returns {Promise<Products.ProductsResponse>}
+     */
     create (newProduct){
         return new Promise((resolver, rechazar) => {
             let products = [], productExist = false, product = newProduct;
@@ -42,6 +48,12 @@ export default {
         })
     },
   
+    /**
+     * Elimina un producto del local storage
+     * 
+     * @param {product} product 
+     * @returns {Promise<Products.ProductsResponse>}
+     */
     delete (product){
         return new Promise((resolver, rechazar) => {
             let products = JSON.parse(localStorage.products), deleted = false;
@@ -71,6 +83,13 @@ export default {
         })
     },
 
+    /**
+     * Edita un producto del local storage
+     * 
+     * @param {newProduct} newProduct 
+     * @param {oldProduct} oldProduct 
+     * @returns {Promise<Products.ProductsResponse>}
+     */
     edit (newProduct, oldProduct){
         return new Promise((resolver, rechazar) => {
             let products = JSON.parse(localStorage.products), edited = false, product = {};
@@ -102,5 +121,23 @@ export default {
                 });
             }
         })
+    },
+
+    /**
+     * Busca uno o varios productos del local storage
+     * 
+     * @param {product} product 
+     * @returns {Array}
+     */
+    search(product){
+        let productsLocalStorage = JSON.parse(localStorage.products);
+        let results = [];
+
+        for (let i = 0; i < productsLocalStorage.length; i++) { 
+            if (productsLocalStorage[i].title.match(product)) {
+                results.push(productsLocalStorage[i]);
+            }           
+        }
+        return results;
     }
 }

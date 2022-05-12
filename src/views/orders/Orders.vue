@@ -1,5 +1,5 @@
 <template>
   <div class="orders">
-    <h1>Orders</h1>
+    <h1>Orders uwu</h1>
   </div>
 </template>

@@ -1,5 +1,11 @@
 export default {
 
+    /**
+     * Crea una nueva categoría en el local storage
+     * 
+     * @param {category} value 
+     * @returns {Promise<Categories.CategoriesResponse>}
+     */
     create (value){
         return new Promise((resolver, rechazar) => {
             let categories = [], categoryExist = false;
@@ -39,6 +45,13 @@ export default {
             }
         })
     },
+
+    /**
+     * Elimina una nueva categoría del local storage
+     * 
+     * @param {category} value 
+     * @returns {Promise<Categories.CategoriesResponse>}
+     */
     delete (category){
         return new Promise((resolver, rechazar) => {
             let categories = JSON.parse(localStorage.categories), deleted = false;
@@ -96,6 +109,13 @@ export default {
             }
         })
     },
+
+    /**
+     * Edita una nueva categoría del local storage
+     * 
+     * @param {category} value 
+     * @returns {Promise<Categories.CategoriesResponse>}
+     */
     edit (newCategory, oldCategory){
         return new Promise((resolver, rechazar) => {
             let categories = JSON.parse(localStorage.categories), editSuccess = false;

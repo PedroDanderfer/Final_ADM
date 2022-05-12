@@ -132,14 +132,31 @@ export default {
     }
   },
   methods:{
+    /**
+     * Actualiza los inputs de la data del componente.
+     * 
+     * @param {data} data
+     */
     updateInput: function(data){
         this.inputs[data.name].value = data.value;
         this.inputs[data.name].validated = data.validated;
         this.inputs[data.name].errors = data.errors;
     },
+
+    /**
+     * Obtiene las reglas de validacion dependiendo el nombre del input
+     * 
+     * @param {string} value
+     * @returns {array}
+     */
     getValidationRules: function(value){
       return validationServices.getValidationRules(value);
     },
+
+    /**
+     * Crea una categoría
+     * 
+     */
     createCategory: function(){
       this.$refs.categoryInput.validate();
 

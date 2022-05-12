@@ -5,7 +5,7 @@
           <button v-on:click="addTable">Agregar mesa</button>
       </div>
       <ul v-if="this.tables.length != 0">
-        <TablesItem v-for="table in this.tables" :key="table.number" :table="table"/>
+        <TablesItem v-for="table in this.tables" :key="table.number+1" :table="table"/>
       </ul>
       <NotFound v-else message="No tienes ninguna mesa." />
   </section>

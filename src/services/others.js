@@ -1,4 +1,10 @@
 export default {
+    /**
+     * Genera un numero aleatoreo que este disponible para ser asignado como id de la mesa.
+     * 
+     * @param {Array} tables 
+     * @returns {Number}
+     */
     generateTablesId(tables){
         let idExisting = [], number;
 

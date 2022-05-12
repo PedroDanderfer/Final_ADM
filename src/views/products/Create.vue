@@ -80,11 +80,16 @@
   }
 
   #sectionCreateProduct >form >input[type=submit]{
-   width: 100%;
-   padding: 5px;
-   background-color: #f59f2a;
-   border: 1px solid #f59f2a;
-   border-radius: 5px;
+    width: 100%;
+    padding: 5px;
+    height: fit-content;
+    background-color: #f59f2a;
+    border: 1px solid #f59f2a;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
   }
 
   .emptyCategories{

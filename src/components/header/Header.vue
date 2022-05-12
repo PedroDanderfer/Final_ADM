@@ -12,7 +12,6 @@
       </nav>
   </header>
 </template>
-
 <style>
 header{
     display: grid;

@@ -1,5 +1,12 @@
 export default {
 
+    /**
+     * Valida un valor mediante un array de reglas.
+     * 
+     * @param {request} req 
+     * @returns {update}
+     */
+
     validate(req) {
         let response, split, errors = [], validated = true;
 
@@ -36,6 +43,12 @@ export default {
         return update;
     },
 
+    /**
+     * Valida si un valor existe
+     * 
+     * @param {value} value 
+     * @returns {boolean}
+     */
     required: function(value){
         if(value === null || value === ''){
             return {
@@ -49,6 +62,14 @@ export default {
         }
     },
 
+    /**
+     * Valida que el valor no se exceda del parametro
+     * 
+     * @param {value} value 
+     * @param {number} param 
+     * @param {array} rules 
+     * @returns {boolean}
+     */
     max: function(value, param, rules){
         if(rules.includes('numeric')){
             if(value !== null && parseInt(value) > parseInt(param)){
@@ -74,6 +95,15 @@ export default {
             }
         }
     },
+
+    /**
+     * Valida que el valor este por encima del parametro
+     * 
+     * @param {value} value 
+     * @param {number} param 
+     * @param {array} rules 
+     * @returns {boolean}
+     */
     min: function(value, param, rules){
         if(rules.includes('numeric')){
             if(value !== null && parseInt(value) < parseInt(param)){
@@ -106,6 +136,12 @@ export default {
         }
     },
 
+    /**
+     * Valida si el valor es numerico
+     * 
+     * @param {value} value 
+     * @returns {boolean}
+     */
     numeric (value){
         if(value == null || value == ''){
             return {
@@ -125,6 +161,13 @@ export default {
         }            
     },
 
+    /**
+     * Valida si el valor es unico
+     * 
+     * @param {value} value 
+     * @param {string} params 
+     * @returns {boolean}
+     */
     unique(value, params){
         let param, list, exist = false;
         if(params.includes('-')){
@@ -163,6 +206,12 @@ export default {
         }
     },
 
+    /**
+     * Valida si el valor es un array
+     * 
+     * @param {value} value 
+     * @returns {boolean}
+     */
     array(value){
         if(Array.isArray(value)){
             return{
@@ -176,6 +225,12 @@ export default {
         }
     },
 
+    /**
+     * Valida si el valor es booleano
+     * 
+     * @param {value} value 
+     * @returns {boolean}
+     */
     bool(value){
         if(typeof value == "boolean"){
             return{
@@ -189,6 +244,12 @@ export default {
         }
     },
     
+    /**
+     * Devuelve las reglas de validacion gracias al nombre del campo
+     * 
+     * @param {string} name 
+     * @returns {array}
+     */
     getValidationRules(name) {
         let rules = {
             category: ['required', 'max:20', 'min:2'],
@@ -198,6 +259,7 @@ export default {
             price: ['numeric'],
             stock: ['bool'],
             discount:['numeric', 'min:1', 'max:100'],
+            diners:['required','numeric','min:1', 'max:100']
         };
 
         return rules[name];

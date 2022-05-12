@@ -1,15 +1,16 @@
 <template>
     <li class="TableItem">
-        <router-link :to="'/tables/get/'+this.table.number">
+        <router-link :to="'/table/get/'+this.table.number">
             <div>
                 <h3><span>Mesa N°</span><span>{{ this.table.number }}</span></h3>
                 <span></span>
                 <div>
                     <div>
                         <p v-if="this.table.status == 'empty'">Vacia</p>
+                        <p v-if="this.table.status == 'waiting'">Esperando</p>
                     </div>
-                    <div v-if="this.table.customers.length > 0">
-                        <p>{{ this.table.customers.length }} clientes.</p>
+                    <div v-if="this.table.diners > 0">
+                        <p><span>{{ this.table.diners }}</span> <span class="dinersIcon" v-if="this.table.diners == 1">cliente</span><span class="dinersIcon" v-else>clientes</span></p>
                     </div>
                 </div>
             </div>  
@@ -57,9 +58,9 @@
     }
 
     .TableItem >a >div >h3 >span:last-of-type{
-        background-color: lightyellow;
+        background-color: #f59f2a;
         padding: 2px 5px 2px 5px;
-        border: 1px solid lightyellow;
+        border: 1px solid #f59f2a;
         border-radius: 5px;
     }
 
@@ -82,16 +83,42 @@
         grid-gap: 20px;
     }
 
-    .TableItem >a >div >div:last-of-type >div:first-of-type{
+    .TableItem >a >div >div:last-of-type >div{
         width: fit-content;
         height: fit-content;
         padding: 2px 5px 2px 5px;
-        background-color: lightyellow;
-        border: 1px solid lightyellow;
+        background-color: #f59f2a;
+        border: 1px solid #f59f2a;
         border-radius: 5px;
         display: flex;
         align-self: center;
         justify-self: center;
+    }
+
+    .TableItem >a >div >div:last-of-type >div:last-of-type >p{
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: 1fr;
+    }
+
+    .TableItem >a >div >div:last-of-type >div:last-of-type >p >span:first-of-type{
+        display: flex;
+        align-self: center;
+        justify-self: center;
+    }
+
+    .dinersIcon{
+        display: flex;
+        align-self: center;
+        justify-self: center;
+        background-image: url('../../assets/images/icons/dinners_icon.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 30px;
+        height: 30px;
+        background-color: transparent;
+        font-size: 0;
     }
 
 </style>

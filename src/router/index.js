@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Tables from '../views/tables/Tables.vue'
+import Table from '../views/tables/Table.vue'
 import Menu from '../views/menu/Menu.vue'
 import Categories from '../views/categories/Categories.vue'
 import CreateProducts from '../views/products/Create.vue'
@@ -19,6 +20,11 @@ const routes = [
     path: '/tables',
     name: 'Tables',
     component: Tables
+  },
+  {
+    path: '/table/get/:table',
+    name: 'Table',
+    component: Table
   },
   {
     path: '/menu',

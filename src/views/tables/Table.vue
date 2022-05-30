@@ -2,6 +2,7 @@
     <section id="sectionTable">
         <div>
             <h2>Mesa n° {{this.table.number}}</h2>
+            <button @click="this.goBack" v-if="this.table.status == 'waiting' || this.table.status == 'paying'">Volver atras</button>
             <button @click="this.deleteTable">Borrar mesa</button>
         </div>
         <div v-if="this.table.status == 'empty'" id="sectionTableAssignDiners">
@@ -9,6 +10,9 @@
         </div>
         <div v-else-if="this.table.status == 'waiting'">
             <DinersOrder :tableNumber="this.table.number" :table="this.table" v-on:updateTable="updateTable"/>
+        </div>
+        <div v-else-if="this.table.status == 'paying'">
+            <PayingOrder/>
         </div>
     </section>
 </template>
@@ -31,14 +35,13 @@
 
     #sectionTable >div:first-of-type{
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: auto 30px 30px;
         grid-template-rows: 1fr;
         grid-gap: 10px;
     }
 
     #sectionTable >div:first-of-type button{
         background-color: white;
-        background-image: url('../../assets/images/icons/delete_icon.png');
         background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
@@ -52,42 +55,28 @@
         outline: none;
     }
 
-    #sectionTableAssignDiners{
-        width:100%;
-        padding: 40px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: white;
-        height: fit-content;
-        max-width: 500px;
-        text-align: center;
+    #sectionTable >div:first-of-type button:first-of-type{
+        background-image: url('../../assets/images/icons/back_icon.png');
     }
 
-    #sectionTableAssignDiners >form >input[type="submit"]{
-        width: fit-content;
-        padding: 5px;
-        height: fit-content;
-        background-color: #f59f2a;
-        border: 1px solid #f59f2a;
-        border-radius: 5px;
-        font-weight: 500;
-        font-size: 15px;
-        color: black;
-        text-decoration: none;
-        margin-top: 10px;
+    #sectionTable >div:first-of-type button:last-of-type{
+        background-image: url('../../assets/images/icons/delete_icon.png');
     }
+    
 </style>
 <script>
 import tablesServices from '@/services/tables.js'
 
 import AssignDiners from '@/components/display/AssignDiners.vue'
 import DinersOrder from '@/components/display/DinersOrder.vue'
+import PayingOrder from '@/components/display/PayingOrder.vue'
 
 export default {
     name: 'Table',
     components:{
         DinersOrder,
-        AssignDiners
+        AssignDiners,
+        PayingOrder
     },
     data: function(){
         return{
@@ -95,6 +84,38 @@ export default {
         }
     },
     methods:{
+        goBack:function(){
+            let tables = JSON.parse(localStorage.tables);
+            if(this.table.status == 'waiting'){
+                for (let i = 0; i < tables.length; i++) {
+                    if(tables[i].number === this.table.number){
+                        tables[i].status = 'empty';
+                        tables[i].order = [];
+                        break;
+                    }else{
+                        continue;
+                    }
+                }
+
+                localStorage.tables = JSON.stringify(tables);
+                this.table.status = 'empty';
+                this.table.order = [];
+            }else if(this.table.status == 'paying'){
+                for (let i = 0; i < tables.length; i++) {
+                    if(tables[i].number === this.table.number){
+                        tables[i].status = 'waiting';
+                        break;
+                    }else{
+                        continue;
+                    }
+                }
+
+                localStorage.tables = JSON.stringify(tables);
+                this.table.status = 'waiting';
+            }else{
+                return false;
+            }
+        },
         getTable: function(table){
             let tables = JSON.parse(localStorage.tables);
             for (let i = 0; i < tables.length; i++) {

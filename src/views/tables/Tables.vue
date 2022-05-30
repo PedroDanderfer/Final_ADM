@@ -26,6 +26,8 @@
     grid-gap: 20px;
     height: fit-content;
     max-width: 500px;
+    overflow-y: hidden;
+    overflow-x: hidden;
   }
 
   #sectionTables >div:first-of-type{
@@ -40,6 +42,7 @@
     grid-template-rows: 1fr;
     grid-gap: 10px;
     height: fit-content;
+    width: 100%;
   }
 
   #sectionTables >div:first-of-type >h2{
@@ -66,7 +69,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
+    grid-gap: 10px;
     list-style: none;
   }
 

@@ -10,7 +10,7 @@
       </nav>
     </div>
     <ul v-if="!this.ProductsNotFound">
-        <li v-for="category in this.menu" :key="category.category">
+        <li v-for="(category, index) in this.menu" :key="index">
           <div class="divProduct" v-if="category.products.length >= 1">
             <div>
                 <h2>{{ category.category }}</h2>

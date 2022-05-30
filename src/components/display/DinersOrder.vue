@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="dinersOrder">
         <div>
             <h3>Agregue los productos</h3>
             <div>
@@ -37,19 +37,297 @@
                     <div>
                         <PriceDisplay :price="product.price" :discount="product.discount" />
                         <div>
-                            <button @click="assignAmount(product, 'remove')">Restar cantidad</button>
-                            <p>{{ product.amount }}</p>
-                            <button @click="assignAmount(product, 'add')">Agregar cantidad</button>
+                            <div>
+                                <button @click="assignAmount(product, 'remove')">Restar cantidad</button>
+                                <p>{{ product.amount }}</p>
+                                <button @click="assignAmount(product, 'add')">Agregar cantidad</button>
+                            </div>
                         </div>
                     </div>
                 </li>
             </ul>
         </div>
         <div>
-            <p>{{ totalPrice }}</p>
+            <p>Total: {{ totalPrice }}</p>
+            <button @click="this.goToPay">Cobrar</button>
         </div>
     </div>
 </template>
+<style>
+    #dinersOrder{
+        width:100%;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        height: fit-content;
+        max-width: 500px;
+        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto calc(100vh - 280px) auto;
+        grid-gap: 20px;
+    }
+
+    #dinersOrder >div:first-of-type{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-gap: 10px;
+        width: 100%;
+        height: fit-content;
+    }
+
+    #dinersOrder >div:first-of-type h3{
+        display: flex;
+        align-self: center;
+        justify-self: flex-start;
+    }
+
+    #dinersOrder >div:first-of-type >div >div:first-of-type{
+        display: grid;
+        grid-template-columns: 1fr 30px;
+        grid-template-rows: 1fr;
+    }
+
+    #dinersOrder >div:first-of-type >div >div:first-of-type >input{
+        width: 100%;
+        height: 30px;
+        outline: none;
+        padding: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    #dinersOrder >div:first-of-type >div >div:first-of-type >button{
+        width: 30px;
+        height: 30px;
+        font-size: 0;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background-image: url('../../assets/images/icons/close_icon.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: transparent;
+        outline: none;
+    }
+
+    #dinersOrder >div:first-of-type >div >ul{
+        display: grid;
+        grid-template-columns: 1fr;
+        width: calc(100vw - 40px);
+        max-width: 480px;
+        height: fit-content;
+        overflow-y: scroll;
+        border: 1px solid #333;
+        border-radius: 5px;
+        position: absolute;
+        background-color: white;
+        margin-top: 10px;
+        overflow-y: scroll;
+        max-height: 40vh;
+    }
+
+    #dinersOrder >div:first-of-type >div >ul >li{
+        background-color: transparent;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        grid-gap: 10px;
+        padding: 15px;
+        min-height: 120px;
+    }
+    #dinersOrder >div:first-of-type >div >ul >li:nth-child(even){
+        background-color: #ddd;
+    }
+    #dinersOrder >div:first-of-type >div >ul >li:nth-child(odd){
+        background-color: #fff;
+    }
+
+
+    #dinersOrder >div:first-of-type >div >ul >li >div:first-of-type{
+        display: grid;
+        grid-template-columns: 1fr 30px;
+        grid-template-rows: 1fr;
+        grid-gap: 10px;
+    }
+
+    #dinersOrder >div:first-of-type >div >ul >li >div:first-of-type h4{
+        display: flex;
+        align-self: center;
+        justify-self: flex-start;
+    }
+
+    #dinersOrder >div:first-of-type >div >ul >li >div:first-of-type button{
+        height: 30px;
+        width: 30px;
+        display: flex;
+        align-self: center;
+        justify-self: center;
+        font-size: 0;
+        background-image: url('../../assets/images/icons/add_icon.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        border: none;
+        background-color: transparent;
+        outline: none;
+    }
+    #dinersOrder >div:first-of-type >div >ul >li >div:last-of-type{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-gap: 10px;
+    }
+
+    #dinersOrder >div:first-of-type >div >ul >li >div:last-of-type >p{
+        display:flex;
+        align-self: center;
+        justify-self: center;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >h3{
+        text-align: left;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul{
+        list-style: none;
+        display: grid;
+        grid-template-columns: 1fr;
+        max-height: calc(100vh - 300px);
+        overflow-y: scroll;
+    }
+    
+    #dinersOrder >div:nth-of-type(2) >ul >li{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        padding: 10px;
+        grid-gap: 15px;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li:nth-child(even){
+        background-color: #ddd;
+    }
+    #dinersOrder >div:nth-of-type(2) >ul >li:nth-child(odd){
+        background-color: #fff;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:first-of-type{
+        display: grid;
+        grid-template-columns: auto 30px;
+        grid-template-rows: 1fr;
+        grid-gap: 10px;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:first-of-type >h4{
+        height: fit-content;
+        width: fit-content;
+        display: flex;
+        align-self: center;
+        justify-self: flex-start;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:first-of-type >button{
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-self: center;
+        justify-self: center;
+        border: none;
+        outline: none;
+        background: transparent;
+        background-image: url('../../assets/images/icons/delete_icon.png');
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        font-size: 0;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-gap: 10px;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:first-of-type{
+        display: flex;
+        align-self: center;
+        justify-self: flex-start;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:last-of-type{
+        display: flex;
+        align-self: center;
+        justify-self: flex-end;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:last-of-type >div{
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: 1fr;
+        grid-gap: 5px;
+    }
+    
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:last-of-type >div >button{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-self: center;
+        justify-self: center;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        font-size: 0;
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:last-of-type >div >button:first-of-type{
+        background-image: url('../../assets/images/icons/remove_icon.png');
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:last-of-type >div >button:last-of-type{
+        background-image: url('../../assets/images/icons/add_icon.png');
+    }
+
+    #dinersOrder >div:nth-of-type(2) >ul >li >div:last-of-type >div:last-of-type >div >p{
+        display: flex;
+        align-self: center;
+        justify-self: center;
+    }
+
+    #dinersOrder >div:last-of-type{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-gap: 10px;
+    }
+
+    #dinersOrder >div:last-of-type >p{
+        display: flex;
+        align-self: center;
+        justify-self: flex-start;
+        font-weight: bold;
+    }
+
+    #dinersOrder >div:last-of-type >button{
+        padding: 5px;
+        height: fit-content;
+        background-color: #f59f2a;
+        border: 1px solid #f59f2a;
+        border-radius: 5px;
+        font-weight: 500;
+        display: flex;
+        font-size: 15px;
+        align-self: center;
+        justify-self: flex-end;
+    }
+</style>
 <script>
 import productsServices from '@/services/products.js'
 import PriceDisplay from '@/components/display/Price.vue'
@@ -100,6 +378,31 @@ export default {
         },
     },
     methods:{
+        goToPay: function(){
+            if(this.table.order.length == 0){
+                return this.$store.commit('addNotification', { type: 'errors', message: 'No se agregaron productos al pedido.' });
+            }
+            
+            let tables = JSON.parse(localStorage.tables);
+
+            for (let i = 0; i < tables.length; i++) {
+                if(tables[i].number == this.table.number){
+                    tables[i].status = 'paying';
+                    break;
+                }else{
+                    continue;
+                }
+            }
+
+            localStorage.tables = JSON.stringify(tables);
+            return this.$emit('updateTable', [
+                        {
+                            update:'status',
+                            value: 'paying'
+                        }
+                    ]);
+            
+        },
         getTotalPrice: function(){
             let total = 0;
             for (let i = 0; i < this.table.order.length; i++) {
@@ -275,18 +578,6 @@ export default {
         },
     },
     mounted: function(){
-        let tables = JSON.parse(localStorage.tables), table;
-
-        for (let i = 0; i < tables.length; i++) {
-            if(tables[i].number == this.tableNumber){
-                table = tables[i];
-                break;
-            }else{
-                continue;
-            }   
-        }
-
-        this.table = table;
         return this.getTotalPrice();
     }
 }

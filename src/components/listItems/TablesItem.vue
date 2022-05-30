@@ -31,7 +31,7 @@
 
     .TableItem >a{ 
         display: block;
-        padding: 10px;
+        padding: 5px;
         text-decoration: none;
         color: black;
     }
@@ -80,13 +80,13 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr;
-        grid-gap: 20px;
+        grid-gap: 5px;
     }
 
     .TableItem >a >div >div:last-of-type >div{
         width: fit-content;
         height: fit-content;
-        padding: 2px 5px 2px 5px;
+        padding: 1px 5px 1px 5px;
         background-color: #f59f2a;
         border: 1px solid #f59f2a;
         border-radius: 5px;

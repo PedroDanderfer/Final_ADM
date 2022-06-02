@@ -12,7 +12,7 @@
             <DinersOrder :tableNumber="this.table.number" :table="this.table" v-on:updateTable="updateTable"/>
         </div>
         <div v-else-if="this.table.status == 'paying'">
-            <PayingOrder/>
+            <PayingOrder :table="this.table"/>
         </div>
     </section>
 </template>
@@ -143,7 +143,6 @@ export default {
             for (let i = 0; i < update.length; i++) {
                 if(update[i].update == 'pushProduct'){
                     table.order.push(update[i].value);
-                    return this.$set(this.table, table);
                 }else if(update[i].update == 'removeProduct'){
                     for (let j = 0; j < table.order.length; j++) {
                         if(table.order[j].title == update[i].value.title){
@@ -153,18 +152,16 @@ export default {
                             continue;
                         }
                     }
-                    return this.$set(this.table, table);
                 }else if(update[i].update == 'addAmount'){
                     table.order[update[i].value].amount += 1;
-                    return this.$set(this.table, table);
                 }else if(update[i].update == 'removeAmount'){
                     table.order[update[i].value].amount -= 1;
-                    return this.$set(this.table, table);
                 }else{
+                    console.log(update);
                     table[update[i].update] = update[i].value;
-                    return this.$set(this.table, table);
                 }               
             }
+            return this.$set(this.table, table);
         }
     },
     created:function(){

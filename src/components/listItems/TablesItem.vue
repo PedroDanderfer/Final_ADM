@@ -7,7 +7,8 @@
                 <div>
                     <div>
                         <p v-if="this.table.status == 'empty'">Vacia</p>
-                        <p v-if="this.table.status == 'waiting'">Esperando</p>
+                        <p v-if="this.table.status == 'waiting'">Comiendo</p>
+                        <p v-if="this.table.status == 'paying'">Pagando</p>
                     </div>
                     <div v-if="this.table.diners > 0">
                         <p><span>{{ this.table.diners }}</span> <span class="dinersIcon" v-if="this.table.diners == 1">cliente</span><span class="dinersIcon" v-else>clientes</span></p>

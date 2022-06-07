@@ -26,7 +26,7 @@
         border: 1px solid white;
         border-radius: 10px;
         height: fit-content;
-        max-width: 500px;
+        max-width: 800px;
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;

@@ -34,13 +34,13 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 20px;
-    max-width: 500px;
+    max-width: 800px;
   }
 
   #sectionMenu >div:first-of-type{
     width:100%;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto 300px;
     grid-template-rows: 1fr;    
     grid-gap: 10px;
     background-color: white;

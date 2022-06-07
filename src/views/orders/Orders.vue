@@ -42,6 +42,9 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
     grid-gap: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   #Orders >div{
@@ -210,6 +213,12 @@
   }
   .cardIcon{
     background-image: url('../../assets/images/icons/card_icon.png');
+  }
+
+  @media(min-width:600px){
+    #Orders >ul{
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>
 <script>

@@ -25,7 +25,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 20px;
-    max-width: 500px;
+    max-width: 800px;
   }
 
   #sectionCategories >div:first-of-type{

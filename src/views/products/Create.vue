@@ -45,7 +45,7 @@
     grid-template-rows: auto auto;
     grid-gap: 20px;
     height: fit-content;
-    max-width: 500px;
+    max-width: 800px;
   }
 
   #sectionCreateProduct >div:first-of-type{
